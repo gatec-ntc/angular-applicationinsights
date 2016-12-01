@@ -1,11 +1,12 @@
 ﻿
-     class Options {
-        
-            applicationName= '';
-            autoPageViewTracking= true;
-            autoLogTracking= true;
-            autoExceptionTracking= true;
-            sessionInactivityTimeout = 1800000;
-            instrumentationKey = '';
-            developerMode = true;        
-    }
+class Options {
+
+    applicationName = '';
+    autoPageViewTracking = true;
+    autoLogTracking = true;
+    autoExceptionTracking = true;
+    sessionInactivityTimeout = 1800000;
+    instrumentationKey = '';
+    developerMode = true;
+    customProperties = {};
+}

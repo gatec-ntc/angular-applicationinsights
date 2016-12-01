@@ -13,7 +13,7 @@ class ApplicationInsights {
     private _locale: angular.ILocaleService;
     private _window: angular.IWindowService;
     private _location: angular.ILocationService;
-    private _httpRequestFactory:()=>IHttpRequest;
+    private _httpRequestFactory: () => IHttpRequest;
 
     private _log: any;
     private _exceptionHandler: any;
@@ -52,7 +52,7 @@ class ApplicationInsights {
         $location: angular.ILocationService,
         logInterceptor: LogInterceptor,
         exceptionInterceptor: ExceptionInterceptor,
-        httpRequestFactory:()=>IHttpRequest,
+        httpRequestFactory: () => IHttpRequest,
         options: Options) {
 
         this._localStorage = localStorage;
@@ -215,25 +215,28 @@ class ApplicationInsights {
 
 
     private sendData(data) {
-
+        data = data ? data : {};
+        if (this.options.customProperties && data.data.item) {
+            data.data.item.properties = data.data.item.properties ? data.data.item.properties : {};
+            (<any>Object).assign(data.data.item.properties, this.options.customProperties);
+        }
         if (this.options.developerMode) {
             console.log(data);
             return;
         }
-
         var request = this._httpRequestFactory();
 
         var headers = {};
         headers["Accept"] = this._contentType; // jshint ignore:line
         headers["Content-Type"] = this._contentType;
-         var options: HttpRequestOptions = {
+        var options: HttpRequestOptions = {
             method: "POST",
             url: this._analyticsServiceUrl,
             headers: headers,
             data: data,
         };
         try {
-           request.send(options,
+            request.send(options,
                 () => {
                     ExceptionInterceptor.errorOnHttpCall = false;
                     // this callback will be called asynchronously
